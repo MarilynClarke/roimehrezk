@@ -1,3 +1,5 @@
+![https://travis-ci.org/santiagobasulto/smartcsv.svg](https://travis-ci.org/santiagobasulto/smartcsv.svg)
+
 # Smart and awesome CSV utils
 
 **CSVs are awesome, yet they're pretty dumb. Let's get them smarter!**
