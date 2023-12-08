@@ -1,7 +1,5 @@
 cov-core==1.14.0
 coverage==3.7.1
-ipdb==0.8
-ipython==2.2.0
 py==1.4.23
 pytest==2.6.1
 pytest-cov==1.8.0
