@@ -22,7 +22,7 @@ class PyTest(TestCommand):
 
 setup(
     name='smartcsv',
-    version='0.1',
+    version='0.1.1',
     description="CSVs are awesome, yet they're pretty dumb. Let's get them smarter!",
     url='http://github.com/santiagobasulto/smartcsv',
     author='Santiago Basulto',
