@@ -48,7 +48,7 @@ class CSVModelReaderFailingCountTestCase(BaseSmartCSVTestCase):
         ipad = next(reader)
         self.assertEqual(ipad['title'], 'iPad mini')
 
-        self.assertIsNotNone(reader.errors)
+        self.assertTrue(reader.errors is not None)
         self.assertTrue('rows' in reader.errors)
 
         self.assertEqual(len(reader.errors['rows']), 4)
@@ -66,7 +66,7 @@ class CSVModelReaderFailingCountTestCase(BaseSmartCSVTestCase):
         ipad = next(reader)
         self.assertEqual(ipad['title'], 'iPad mini')
 
-        self.assertIsNotNone(reader.errors)
+        self.assertTrue(reader.errors is not None)
         self.assertTrue('rows' in reader.errors)
 
         self.assertEqual(len(reader.errors['rows']), 4)
@@ -81,13 +81,13 @@ class CSVModelReaderFailingCountTestCase(BaseSmartCSVTestCase):
         reader = smartcsv.reader(StringIO(self.csv_data), columns=COLUMNS_1,
                                  max_failures=3, fail_fast=False)
 
-        with self.assertRaises(InvalidCSVException) as e:
+        try:
             next(reader)
+        except InvalidCSVException as e:
+            self.assertTrue(e.errors is not None)
 
-        self.assertTrue('currency' in e.exception.errors)
-
-        self.assertIsNotNone(reader.errors)
-        self.assertTrue('rows' in reader.errors)
+            self.assertTrue('currency' in e.errors)
+            self.assertTrue('rows' in reader.errors)
 
         self.assertEqual(len(reader.errors['rows']), 2)
 

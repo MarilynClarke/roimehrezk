@@ -6,7 +6,6 @@ else:
 from .base import BaseSmartCSVTestCase
 from .config import COLUMNS_1, IPHONE_DATA, IPAD_DATA, VALID_TEMPLATE_STR
 
-
 import smartcsv
 
 
@@ -29,8 +28,8 @@ title,category,subcategory,currency,price,url,image_url
         reader = smartcsv.reader(StringIO(csv_data), columns=COLUMNS_1)
         iphone = next(reader)
         ipad = next(reader)
-        with self.assertRaises(StopIteration):
-            next(reader)
+
+        self.assertRaises(StopIteration, lambda: list(next(reader)))
 
         self.assertTrue(isinstance(iphone, dict) and isinstance(ipad, dict))
 
@@ -57,8 +56,8 @@ title,category,subcategory,currency,price,url,image_url
         reader = smartcsv.reader(StringIO(csv_data), columns=COLUMNS_1)
         iphone = next(reader)
         ipad = next(reader)
-        with self.assertRaises(StopIteration):
-            next(reader)
+
+        self.assertRaises(StopIteration, lambda: list(next(reader)))
 
         self.assertTrue(
             isinstance(iphone, dict) and isinstance(ipad, dict))
@@ -80,8 +79,8 @@ title,category,subcategory,currency,price,url,image_url
         reader = smartcsv.reader(StringIO(csv_data), columns=COLUMNS_1)
         iphone = next(reader)
         ipad = next(reader)
-        with self.assertRaises(StopIteration):
-            next(reader)
+
+        self.assertRaises(StopIteration, lambda: list(next(reader)))
 
         self.assertTrue(
             isinstance(iphone, dict) and isinstance(ipad, dict))
@@ -109,8 +108,8 @@ title,category,subcategory,currency,price,url,image_url
             StringIO(csv_data), columns=COLUMNS_1, strip_white_spaces=False)
         iphone = next(reader)
         ipad = next(reader)
-        with self.assertRaises(StopIteration):
-            next(reader)
+
+        self.assertRaises(StopIteration, lambda: list(next(reader)))
 
         self.assertTrue(
             isinstance(iphone, dict) and isinstance(ipad, dict))
@@ -140,8 +139,8 @@ title,category,subcategory,currency,price,url,image_url
         reader = smartcsv.reader(StringIO(csv_data), columns=COLUMNS_1)
         iphone = next(reader)
         ipad = next(reader)
-        with self.assertRaises(StopIteration):
-            next(reader)
+
+        self.assertRaises(StopIteration, lambda: list(next(reader)))
 
         self.assertTrue(isinstance(iphone, dict) and isinstance(ipad, dict))
 
@@ -169,8 +168,8 @@ title,category,subcategory,currency,price,url,image_url
         reader = smartcsv.reader(StringIO(csv_data), columns=COLUMNS_1)
         iphone = next(reader)
         ipad = next(reader)
-        with self.assertRaises(StopIteration):
-            next(reader)
+
+        self.assertRaises(StopIteration, lambda: list(next(reader)))
 
         self.assertTrue(isinstance(iphone, dict) and isinstance(ipad, dict))
 
@@ -200,8 +199,7 @@ title,category,subcategory,currency,price,url,image_url
         iphone = next(reader)
         ipad = next(reader)
 
-        with self.assertRaises(StopIteration):
-            next(reader)
+        self.assertRaises(StopIteration, lambda: list(next(reader)))
 
         self.assertTrue(isinstance(iphone, dict) and isinstance(ipad, dict))
 

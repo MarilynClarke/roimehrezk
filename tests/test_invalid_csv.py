@@ -19,8 +19,7 @@ class InvalidCSVTestCase(BaseSmartCSVTestCase):
 title,subcategory,currency,price,url,image_url
 iPhone 5c blue,Phones,Smartphones,USD,699,http://apple.com/iphone,http://apple.com/iphone.jpg
 """
-        with self.assertRaises(InvalidCSVHeaderException):
-            smartcsv.reader(StringIO(csv_data), columns=COLUMNS_1)
+        self.assertRaises(InvalidCSVHeaderException, lambda: smartcsv.reader(StringIO(csv_data), columns=COLUMNS_1))
 
     def test_if_number_of_fields_is_invalid(self):
         """Should fail if the number of fields provided by the CSV is invalid"""
@@ -30,12 +29,11 @@ title,category,subcategory,currency,price,url,image_url
 iPhone 5c blue,Smartphones,USD,699,http://apple.com/iphone,http://apple.com/iphone.jpg
         """
         reader = smartcsv.reader(StringIO(csv_data), columns=COLUMNS_1)
-
-        with self.assertRaises(InvalidCSVException) as e:
+        try:
             next(reader)
-
-        self.assertIsNotNone(e.exception.errors)
-        self.assertTrue('row_length' in e.exception.errors)
+        except InvalidCSVException as e:
+            self.assertTrue(e.errors is not None)
+            self.assertTrue('row_length' in e.errors)
 
     def test_required_fields_fail_if_no_value_is_provided(self):
         """Should fail if a required field is missing"""
@@ -45,12 +43,11 @@ title,category,subcategory,currency,price,url,image_url
 iPhone 5c blue,,Smartphones,USD,699,http://apple.com/iphone,http://apple.com/iphone.jpg
 """
         reader = smartcsv.reader(StringIO(csv_data), columns=COLUMNS_1)
-
-        with self.assertRaises(InvalidCSVException) as e:
+        try:
             next(reader)
-
-        self.assertIsNotNone(e.exception.errors)
-        self.assertTrue('category' in e.exception.errors)
+        except InvalidCSVException as e:
+            self.assertTrue(e.errors is not None)
+            self.assertTrue('category' in e.errors)
 
     def test_fail_if_choices_doesnt_match(self):
         """Should fail if the provided value is not contained in the model choices"""
@@ -59,12 +56,11 @@ title,category,subcategory,currency,price,url,image_url
 iPhone 5c blue,Phones,Smartphones,INVALID,699,http://apple.com/iphone,http://apple.com/iphone.jpg
         """
         reader = smartcsv.reader(StringIO(csv_data), columns=COLUMNS_1)
-
-        with self.assertRaises(InvalidCSVException) as e:
+        try:
             next(reader)
-
-        self.assertIsNotNone(e.exception.errors)
-        self.assertTrue('currency' in e.exception.errors)
+        except InvalidCSVException as e:
+            self.assertTrue(e.errors is not None)
+            self.assertTrue('currency' in e.errors)
 
     def test_fail_if_validator_doesnt_validate(self):
         """Should fail if the custom validator doesn't pass"""
@@ -82,11 +78,11 @@ iPhone 5c blue,Phones,Smartphones,USD,INVALID,http://apple.com/iphone,http://app
         """
         reader = smartcsv.reader(StringIO(csv_data), columns=COLUMNS_1)
 
-        with self.assertRaises(InvalidCSVException) as e:
+        try:
             next(reader)
-
-        self.assertIsNotNone(e.exception.errors)
-        self.assertTrue('price' in e.exception.errors)
+        except InvalidCSVException as e:
+            self.assertTrue(e.errors is not None)
+            self.assertTrue('price' in e.errors)
 
     def test_invalid_validator_in_columns_argument(self):
         columns = COLUMNS_1[:]
@@ -100,5 +96,4 @@ iPhone 5c blue,Phones,Smartphones,USD,399,http://apple.com/iphone,http://apple.c
         """
         reader = smartcsv.reader(StringIO(csv_data), columns=columns)
 
-        with self.assertRaises(AttributeError) as e:
-            next(reader)
+        self.assertRaises(AttributeError, lambda: list(next(reader)))

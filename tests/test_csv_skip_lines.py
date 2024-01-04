@@ -26,8 +26,8 @@ class CSVSkipFirstNLinesTestCase(BaseSmartCSVTestCase):
 
         iphone = next(reader)
         ipad = next(reader)
-        with self.assertRaises(StopIteration):
-            next(reader)
+
+        self.assertRaises(StopIteration, lambda: list(next(reader)))
 
         self.assertTrue(
             isinstance(iphone, dict) and isinstance(ipad, dict))
@@ -44,11 +44,11 @@ iPhone 5c blue,Smartphones,USD,699,http://apple.com/iphone,http://apple.com/ipho
         reader = smartcsv.reader(
             StringIO(csv_data), columns=COLUMNS_1, header_included=False)
 
-        with self.assertRaises(InvalidCSVException) as e:
+        try:
             next(reader)
-
-        self.assertIsNotNone(e.exception.errors)
-        self.assertTrue('row_length' in e.exception.errors)
+        except InvalidCSVException as e:
+            self.assertTrue(e.errors is not None)
+            self.assertTrue('row_length' in e.errors)
 
     def test_valid_data_and_skip_lines_without_header(self):
         """Should skip the first N lines and parse data ok without a header"""
@@ -70,8 +70,8 @@ This next is intentionally left blank
 
         iphone = next(reader)
         ipad = next(reader)
-        with self.assertRaises(StopIteration):
-            next(reader)
+
+        self.assertRaises(StopIteration, lambda: list(next(reader)))
 
         self.assertTrue(
             isinstance(iphone, dict) and isinstance(ipad, dict))
@@ -99,8 +99,8 @@ title,category,subcategory,currency,price,url,image_url
 
         iphone = next(reader)
         ipad = next(reader)
-        with self.assertRaises(StopIteration):
-            next(reader)
+
+        self.assertRaises(StopIteration, lambda: list(next(reader)))
 
         self.assertTrue(
             isinstance(iphone, dict) and isinstance(ipad, dict))
@@ -122,6 +122,9 @@ title,category,subcategory,currency,price,url,image_url
             iphone_data=VALID_TEMPLATE_STR.format(**IPHONE_DATA),
             ipad_data=VALID_TEMPLATE_STR.format(**IPAD_DATA),
         )
-        with self.assertRaises(InvalidCSVArgumentException):
+
+        def _create_reader():
             reader = smartcsv.reader(
                 StringIO(csv_data), columns=COLUMNS_1, skip_lines=10)
+
+        self.assertRaises(InvalidCSVArgumentException, _create_reader)

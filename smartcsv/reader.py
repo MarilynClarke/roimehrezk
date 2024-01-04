@@ -5,7 +5,7 @@ from .exceptions import *
 
 class CSVModelReader(object):
 
-    DEFAULT_ROW_INVALID_MESSAGE = "Row {} is invalid."
+    DEFAULT_ROW_INVALID_MESSAGE = "Row {0} is invalid."
 
     def __init__(self, csv_file, dialect=None, encoding='utf-8',
                  columns=None, fail_fast=True, max_failures=None,
@@ -77,7 +77,7 @@ class CSVModelReader(object):
 
         if csv_header != self.model_fields:
             raise InvalidCSVHeaderException(
-                "The header is invalid. Expected {}. Got {}".format(
+                "The header is invalid. Expected {0}. Got {1}".format(
                     self.model_fields, self.csv_header
                 ))
 
@@ -97,7 +97,7 @@ class CSVModelReader(object):
                 return False, {
                     column['name']: (
                         'Invalid choice. '
-                        'Expected {}. Got {}'.format(column['choices'], value))
+                        'Expected {0}. Got {1}'.format(column['choices'], value))
                 }
             if column.get('required', False) and not value:
                 return False, {
@@ -107,7 +107,7 @@ class CSVModelReader(object):
                 validator = column.get('validator')
                 if not hasattr(validator, '__call__'):
                     raise AttributeError(
-                        "The validator for column {} is not callable".format(
+                        "The validator for column {0} is not callable".format(
                             column['name']))
                 if not validator(value):
                     return False, {column['name']: 'Validation failed'}
