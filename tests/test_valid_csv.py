@@ -1,8 +1,11 @@
+import csv
 import six
+
 if six.PY3:
     from io import StringIO
 else:
     from StringIO import StringIO
+
 from .base import BaseSmartCSVTestCase
 from .config import COLUMNS_1, IPHONE_DATA, IPAD_DATA, VALID_TEMPLATE_STR
 
@@ -207,3 +210,30 @@ title,category,subcategory,currency,price,url,image_url
         self.assertEqual(ipad['title'], 'iPad mini')
         self.assertEqual(iphone['subcategory'], '')
         self.assertEqual(ipad['subcategory'], 'Apple')
+
+    def test_valid_csv_with_a_custom_dialect(self):
+        """Should be valid if all data is passed"""
+        piped_template = VALID_TEMPLATE_STR.replace(',', '|')
+        csv_data = """
+title|category|subcategory|currency|price|url|image_url
+{iphone_data}
+{ipad_data}
+            """.format(
+            iphone_data=piped_template.format(**IPHONE_DATA),
+            ipad_data=piped_template.format(**IPAD_DATA),
+        )
+
+        csv.register_dialect('pipes', delimiter='|')
+
+        reader = smartcsv.reader(
+            StringIO(csv_data), dialect='pipes', columns=COLUMNS_1)
+        iphone = next(reader)
+        ipad = next(reader)
+
+        self.assertRaises(StopIteration, lambda: list(next(reader)))
+
+        self.assertTrue(
+            isinstance(iphone, dict) and isinstance(ipad, dict))
+
+        self.assertModelsEquals(iphone, IPHONE_DATA)
+        self.assertModelsEquals(ipad, IPAD_DATA)
