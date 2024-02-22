@@ -59,6 +59,8 @@ with open('my-csv.csv', 'r') as f:
         print(obj['title'])
 ```
 
+`smartcsv.reader` uses the builtin `csv` module and accepts a dialect to use.
+
 ### More advanced usage
 
 Assuming a CSV with the an error in the second row.
