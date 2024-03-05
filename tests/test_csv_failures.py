@@ -36,11 +36,6 @@ class CSVModelReaderFailingCountTestCase(BaseSmartCSVTestCase):
         self.csv_data = csv_data.format(
             r0=ROW0, r1=ROW1, r2=ROW2, r3=ROW3, r4=ROW4)
 
-    def assert_row_error(self, errors, data_row, index, error_type):
-        error_row = errors['rows'][index]
-        self.assertEqual(error_row['row'], data_row.split(','))
-        self.assertTrue(error_type in error_row['errors'], error_row['errors'])
-
     def test_fail_fast_disabled_and_max_failures_in_none(self):
         """Shouldn't fail if there are many fails but fail_fast is False and max_failures is deactivated (None)"""
         reader = smartcsv.reader(StringIO(self.csv_data), columns=COLUMNS_1,
@@ -53,10 +48,10 @@ class CSVModelReaderFailingCountTestCase(BaseSmartCSVTestCase):
 
         self.assertEqual(len(reader.errors['rows']), 4)
 
-        self.assert_row_error(reader.errors, ROW0, 0, 'row_length')
-        self.assert_row_error(reader.errors, ROW1, 1, 'category')
-        self.assert_row_error(reader.errors, ROW2, 2, 'currency')
-        self.assert_row_error(reader.errors, ROW3, 3, 'url')
+        self.assertRowError(reader.errors, ROW0, 0, 'row_length')
+        self.assertRowError(reader.errors, ROW1, 1, 'category')
+        self.assertRowError(reader.errors, ROW2, 2, 'currency')
+        self.assertRowError(reader.errors, ROW3, 3, 'url')
 
     def test_fail_fast_is_disabled_and_max_failures_is_not_reached(self):
         """Shouldn't fail if the number of failures doesn't reach max_failures"""
@@ -71,10 +66,10 @@ class CSVModelReaderFailingCountTestCase(BaseSmartCSVTestCase):
 
         self.assertEqual(len(reader.errors['rows']), 4)
 
-        self.assert_row_error(reader.errors, ROW0, 0, 'row_length')
-        self.assert_row_error(reader.errors, ROW1, 1, 'category')
-        self.assert_row_error(reader.errors, ROW2, 2, 'currency')
-        self.assert_row_error(reader.errors, ROW3, 3, 'url')
+        self.assertRowError(reader.errors, ROW0, 0, 'row_length')
+        self.assertRowError(reader.errors, ROW1, 1, 'category')
+        self.assertRowError(reader.errors, ROW2, 2, 'currency')
+        self.assertRowError(reader.errors, ROW3, 3, 'url')
 
     def test_fail_fast_is_disabled_and_max_failures_is_reached(self):
         """Should fail if max_failures number is reached"""
@@ -91,5 +86,5 @@ class CSVModelReaderFailingCountTestCase(BaseSmartCSVTestCase):
 
         self.assertEqual(len(reader.errors['rows']), 2)
 
-        self.assert_row_error(reader.errors, ROW0, 0, 'row_length')
-        self.assert_row_error(reader.errors, ROW1, 1, 'category')
+        self.assertRowError(reader.errors, ROW0, 0, 'row_length')
+        self.assertRowError(reader.errors, ROW1, 1, 'category')

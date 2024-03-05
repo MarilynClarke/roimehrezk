@@ -13,10 +13,6 @@ import smartcsv
 
 
 class ValidCSVWithHeaderTestCase(BaseSmartCSVTestCase):
-    def assertModelsEquals(self, model1, model2):
-        for k, v in model1.items():
-            self.assertEqual(v, model2[k])
-
     def test_valid_csv_with_all_data_and_header(self):
         """Should be valid if all data is passed"""
         csv_data = """
