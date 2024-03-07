@@ -106,3 +106,13 @@ reader = smartcsv.reader(f, columns=COLUMNS_1, fail_fast=False, skip_lines=3)
 for obj in reader:
     print obj['title']
 ```
+
+### Contributing
+
+Fork, code, watch your tests pass, submit PR.
+To test:
+
+```bash
+$ python setup.py test  # Run tests in your venv
+$ tox  # Make sure it passes in all versions.
+```
