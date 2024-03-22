@@ -68,9 +68,9 @@ Assuming a CSV with the an error in the second row.
 ```python
 reader = smartcsv.reader(f, columns=COLUMNS_1, fail_fast=False)
 for obj in reader:
-    print obj['title']
+    print(obj['title'])
     
-row = reader.errors['rows'][1]  # Second row has index = 1. Errors are 0-indexed.
+error_row = reader.errors['rows'][1]  # Second row has index = 1. Errors are 0-indexed.
 print(error_row['row'])  # Print original row data
 print(error_row['errors'].keys())  # currency  (the currency column)
 print(error_row['errors']['currency'])  # Invalid currency... (nice error explanation)
@@ -104,7 +104,7 @@ The first 3 lines don't contain any valuable data so we'll skip them.
 ```python
 reader = smartcsv.reader(f, columns=COLUMNS_1, fail_fast=False, skip_lines=3)
 for obj in reader:
-    print obj['title']
+    print(obj['title'])
 ```
 
 ### Contributing
