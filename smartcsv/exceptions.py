@@ -8,7 +8,10 @@ class BaseImporterException(Exception):
 
 class InvalidCSVException(BaseImporterException):
     def __init__(self, message, errors=None):
-        super(InvalidCSVException, self).__init__(message)
+        _message = message
+        if errors:
+            _message += " Errors: {0}".format(errors)
+        super(InvalidCSVException, self).__init__(_message)
         self.errors = errors
 
 
