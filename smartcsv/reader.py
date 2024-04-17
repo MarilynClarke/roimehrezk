@@ -93,16 +93,19 @@ class CSVModelReader(object):
 
         for index, value in enumerate(row):
             column = self.columns[index]
-            if 'choices' in column and value not in column['choices']:
-                return False, {
-                    column['name']: (
-                        'Invalid choice. '
-                        'Expected {0}. Got {1}'.format(column['choices'], value))
-                }
             if column.get('required', False) and not value:
                 return False, {
                     column['name']: 'Field required and not provided.'
                 }
+
+            if 'choices' in column:
+                if value and value not in column['choices']:
+                    return False, {
+                        column['name']: (
+                            'Invalid choice. '
+                            'Expected {0}. Got {1}'.format(column['choices'], value))
+                    }
+
             if 'validator' in column and value:
                 validator = column.get('validator')
                 if not hasattr(validator, '__call__'):
