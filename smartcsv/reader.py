@@ -158,6 +158,8 @@ class CSVModelReader(object):
 
         obj = {}
         for index, value in enumerate(csv_row):
+            if self.columns[index].get('skip', False):
+                continue
             value = value.strip() if self.strip_white_spaces else value
             obj[self.model_fields[index]] = value
 
