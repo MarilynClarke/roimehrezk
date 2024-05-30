@@ -1,4 +1,4 @@
-![Travis status](https://travis-ci.org/santiagobasulto/smartcsv.svg) &nbsp; ![PyPi version](https://badge.fury.io/py/requests.png)  &nbsp; ![PyPi downloads](http://img.shields.io/pypi/dm/smartcsv.svg)
+![Travis status](https://travis-ci.org/santiagobasulto/smartcsv.svg) &nbsp; ![PyPi version](https://badge.fury.io/py/smartcsv.png)  &nbsp; ![PyPi downloads](http://img.shields.io/pypi/dm/smartcsv.svg)
 
 # Smart and awesome CSV utils
 
