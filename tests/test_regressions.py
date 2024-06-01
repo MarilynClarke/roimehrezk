@@ -7,7 +7,7 @@ else:
     from StringIO import StringIO
 
 from .base import BaseSmartCSVTestCase
-from .config import CURRENCIES, is_number
+from .config import CURRENCY_CHOICES, is_number
 
 import smartcsv
 from smartcsv.exceptions import InvalidCSVException
@@ -28,7 +28,7 @@ iPad mini,,699
             {
                 'name': 'currency',
                 'required': False,
-                'choices': CURRENCIES
+                'choices': CURRENCY_CHOICES
             },
             {
                 'name': 'price',
@@ -69,7 +69,7 @@ iPad mini,,699
             {
                 'name': 'currency',
                 'required': False,
-                'choices': CURRENCIES
+                'choices': CURRENCY_CHOICES
             },
             {
                 'name': 'price',
@@ -111,7 +111,7 @@ iPad mini,,699
             {
                 'name': 'currency',
                 'required': True,
-                'choices': CURRENCIES
+                'choices': CURRENCY_CHOICES
             },
             {
                 'name': 'price',
