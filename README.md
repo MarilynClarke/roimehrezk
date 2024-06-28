@@ -1,10 +1,36 @@
-![Travis status](https://travis-ci.org/santiagobasulto/smartcsv.svg) &nbsp; ![PyPi version](https://badge.fury.io/py/requests.png)  &nbsp; ![PyPi downloads](http://img.shields.io/pypi/dm/smartcsv.svg)
+![Travis status](https://travis-ci.org/santiagobasulto/smartcsv.svg) &nbsp; ![PyPi version](https://badge.fury.io/py/smartcsv.png)  &nbsp; ![PyPi downloads](http://img.shields.io/pypi/dm/smartcsv.svg)
 
 # Smart and awesome CSV utils
 
 **CSVs are awesome, yet they're pretty dumb. Let's get them smarter!**
 
 smartcsv is a python utility to read and parse CSVs based on model definitions. Instead of just parsing the CSV into lists (like the builtin `csv` module) it adds the ability to specify models with attributes names. On top of that it adds nice features like **validation, custom parsing, failure control and nice error messages**.
+
+```python
+>>> reader = smartcsv.reader(file_object, columns=COLUMNS, fail_fast=False)
+>>> my_object = next(reader)
+>>> my_object['title']  # Accessed by model name.
+'iPhone 5c Blue'
+>>> my_object['price']  # Value transform included
+Decimal("799.99")
+>>> my_object['currency']  # Based on choices = ['USD', 'YEN']
+'USD'
+>>> my_object['url']  # custom validator lambda v: v.startswith('http')
+https://www.apple.com/iphone.jpg
+
+# Nice errors
+>>> from pprint import pprint as pp
+>>> pp(my_object.errors)
+{
+    17: {  # The row number
+        'row': ['','',...]  # The complete row for reference,
+        'errors': {  # Description of the errors
+            'url': 'Validation failed',
+            'currency': 'Invalid choice. Expected ['USD', 'YEN']. Got 'AUD' instead.
+        }
+    }
+}
+```
 
 ### Installation
     pip install smartcsv

@@ -1,4 +1,7 @@
-CURRENCIES = ['USD', 'ARS', 'JPY']
+from decimal import Decimal
+
+CURRENCY_CHOICES = ['USD', 'ARS', 'JPY']
+IN_STOCK_CHOICES = ['YES', 'NO', 'yes', 'no']
 
 
 def is_number(n):
@@ -16,7 +19,7 @@ COLUMNS_1 = [
     {
         'name': 'currency',
         'required': True,
-        'choices': CURRENCIES
+        'choices': CURRENCY_CHOICES
     },
     {
         'name': 'price',
@@ -57,3 +60,24 @@ IPAD_DATA = {
 
 VALID_TEMPLATE_STR = ("{title},{category},{subcategory},{currency},"
                       "{price},{url},{image_url}")
+
+COLUMNS_WITH_VALUE_TRANSFORMATIONS = [
+    {'name': 'title', 'required': True},
+    {
+        'name': 'currency',
+        'required': True,
+        'choices': CURRENCY_CHOICES
+    },
+    {
+        'name': 'price',
+        'required': True,
+        'validator': is_number,
+        'transform': lambda x: Decimal(x)
+    },
+    {
+        'name': 'in_stock',
+        'required': False,
+        'choices': IN_STOCK_CHOICES,
+        'transform': lambda x: x.lower() == 'yes'
+    },
+]

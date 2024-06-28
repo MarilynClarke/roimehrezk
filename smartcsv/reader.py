@@ -90,7 +90,6 @@ class CSVModelReader(object):
         return True, {}
 
     def _is_valid_row_values(self, row):
-
         for index, value in enumerate(row):
             column = self.columns[index]
             if column.get('required', False) and not value:
@@ -131,6 +130,22 @@ class CSVModelReader(object):
             (len(csv_row) == 1 and not csv_row[0].strip())
         )
 
+    def _get_column_by_name(self, name):
+        for column in self.columns:
+            if name == column.get('name'):
+                return column
+
+    def _add_error(self, error_dict, csv_row,
+                   row_counter, error_description=None):
+        row_error = {
+            'row': csv_row,
+            'errors': {
+            }
+        }
+        if error_description:
+            row_error['errors'].update(error_description)
+        error_dict['rows'][row_counter] = row_error
+
     def __next__(self):
         csv_row = next(self.reader)
 
@@ -146,22 +161,37 @@ class CSVModelReader(object):
                     self.DEFAULT_ROW_INVALID_MESSAGE.format(self.row_counter),
                     errors)
             else:
-                row_error = {
-                    'row': csv_row,
-                    'errors': {
-                    }
-                }
-                row_error['errors'].update(errors)
-                self.errors['rows'][self.row_counter] = row_error
+
+                self._add_error(
+                    self.errors, csv_row,
+                    row_counter=self.row_counter, error_description=errors)
                 self.row_counter += 1
                 return next(self)
 
         obj = {}
-        for index, value in enumerate(csv_row):
-            if self.columns[index].get('skip', False):
-                continue
-            value = value.strip() if self.strip_white_spaces else value
-            obj[self.model_fields[index]] = value
+
+        for index, csv_value in enumerate(csv_row):
+            csv_value = (csv_value.strip() if
+                         self.strip_white_spaces else csv_value)
+
+            column_name = self.model_fields[index]
+            column = self._get_column_by_name(column_name)
+
+            value = csv_value
+
+            if 'transform' in column:
+                try:
+                    value = column['transform'](csv_value)
+                except Exception as e:
+                    if self.fail_fast:
+                        raise e
+                    self._add_error(
+                        self.errors, csv_row, self.row_counter,
+                        error_description={'transform': repr(e)})
+                    self.row_counter += 1
+                    return next(self)
+
+            obj[column_name] = value
 
         self.row_counter += 1
         return obj
