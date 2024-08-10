@@ -133,6 +133,16 @@ for obj in reader:
     print(obj['title'])
 ```
 
+**Break (stop) on occurrance of first error**
+
+By default, value of `fail_fast` is `True`. You can also mention it explicitly with `fail_fast=True`. This will cause halting execution of reader() function as soon as it faces an error in the csv file. This error can be data mismatch in between your data specification and found value in csv file. Data-validation failure also trigger `fail_fast`.
+
+```python
+reader = smartcsv.reader(f, columns=COLUMNS_1, fail_fast=True)
+for obj in reader:
+    print(obj['title'])
+```
+
 ### Contributing
 
 Fork, code, watch your tests pass, submit PR.
