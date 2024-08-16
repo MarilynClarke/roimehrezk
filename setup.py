@@ -37,7 +37,8 @@ setup(
         'py==1.4.23',
         'pytest==2.6.1',
         'pytest-cov==1.8.0',
-        'six==1.7.3'
+        'six==1.7.3',
+        'mock==1.0.1'
     ],
     zip_safe=False,
     cmdclass={'test': PyTest},
