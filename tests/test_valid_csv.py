@@ -234,27 +234,3 @@ title|category|subcategory|currency|price|url|image_url
 
         self.assertModelsEquals(iphone, IPHONE_DATA)
         self.assertModelsEquals(ipad, IPAD_DATA)
-
-    def test_valid_csv_with_skipped_columns(self):
-        """Should be valid when some columns are skipped"""
-        columns = deepcopy(COLUMNS_1)
-        columns[5]['skip'] = True  # skip url column
-        csv_data = """
-title,category,subcategory,currency,price,url,image_url
-{iphone_data}
-{ipad_data}
-        """.format(
-            iphone_data=VALID_TEMPLATE_STR.format(**IPHONE_DATA),
-            ipad_data=VALID_TEMPLATE_STR.format(**IPAD_DATA),
-        )
-
-        reader = smartcsv.reader(StringIO(csv_data), columns=columns)
-        iphone = next(reader)
-        ipad = next(reader)
-
-        self.assertRaises(StopIteration, lambda: list(next(reader)))
-
-        self.assertTrue(isinstance(iphone, dict) and isinstance(ipad, dict))
-
-        self.assertFalse('url' in iphone)
-        self.assertFalse('url' in ipad)

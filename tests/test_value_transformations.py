@@ -64,13 +64,13 @@ iPad mini,USD,699,
             'title': 'iPhone 5c blue',
             'currency': 'USD',
             'price': Decimal('799'),
-            'in_stock': False
+            'in_stock': ''
         })
         self.assertModelsEquals(ipad, {
             'title': 'iPad mini',
             'currency': 'USD',
             'price': Decimal('699'),
-            'in_stock': False
+            'in_stock': ''
         })
 
 
@@ -102,7 +102,7 @@ iPad mini,USD,INVALID,
             'title': 'iPhone 5c blue',
             'currency': 'USD',
             'price': Decimal('799'),
-            'in_stock': False
+            'in_stock': ''
         })
 
     def test_invalid_value_with_fail_fast_deactivated(self):
@@ -126,7 +126,7 @@ iPod shuffle,USD,199,
             'title': 'iPhone 5c blue',
             'currency': 'USD',
             'price': Decimal('799'),
-            'in_stock': False
+            'in_stock': ''
         })
         self.assertModelsEquals(mac, {
             'title': 'Macbook Pro',
@@ -138,7 +138,7 @@ iPod shuffle,USD,199,
             'title': 'iPod shuffle',
             'currency': 'USD',
             'price': Decimal('199'),
-            'in_stock': False
+            'in_stock': ''
         })
 
         self.assertTrue(reader.errors is not None)

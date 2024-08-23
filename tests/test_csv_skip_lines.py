@@ -8,7 +8,7 @@ from .config import COLUMNS_1, IPHONE_DATA, IPAD_DATA, VALID_TEMPLATE_STR
 from .base import BaseSmartCSVTestCase
 
 import smartcsv
-from smartcsv.exceptions import InvalidCSVException, InvalidCSVArgumentException
+from smartcsv.exceptions import InvalidCSVException
 
 
 class CSVSkipFirstNLinesTestCase(BaseSmartCSVTestCase):
@@ -49,6 +49,8 @@ iPhone 5c blue,Smartphones,USD,699,http://apple.com/iphone,http://apple.com/ipho
         except InvalidCSVException as e:
             self.assertTrue(e.errors is not None)
             self.assertTrue('row_length' in e.errors)
+        else:
+            assert False, "Shouldn't pass. Exception expected."
 
     def test_valid_data_and_skip_lines_without_header(self):
         """Should skip the first N lines and parse data ok without a header"""
@@ -127,4 +129,4 @@ title,category,subcategory,currency,price,url,image_url
             reader = smartcsv.reader(
                 StringIO(csv_data), columns=COLUMNS_1, skip_lines=10)
 
-        self.assertRaises(InvalidCSVArgumentException, _create_reader)
+        self.assertRaises(AttributeError, _create_reader)

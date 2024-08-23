@@ -1,12 +1,12 @@
 __all__ = ['InvalidCSVException', 'InvalidCSVHeaderException',
-           'InvalidCSVArgumentException']
+           'InvalidCSVColumnDefinition', 'CSVTransformException']
 
 
-class BaseImporterException(Exception):
+class BaseCSVException(Exception):
     pass
 
 
-class InvalidCSVException(BaseImporterException):
+class InvalidCSVException(BaseCSVException):
     def __init__(self, message, errors=None):
         _message = message
         if errors:
@@ -19,5 +19,11 @@ class InvalidCSVHeaderException(InvalidCSVException):
     pass
 
 
-class InvalidCSVArgumentException(InvalidCSVException):
+class InvalidCSVColumnDefinition(InvalidCSVException):
     pass
+
+
+class CSVTransformException(BaseCSVException):
+    def __init__(self, message, original_exception=None):
+        super(CSVTransformException, self).__init__(message)
+        self.original_exception = original_exception

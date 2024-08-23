@@ -22,10 +22,11 @@ class PyTest(TestCommand):
 
 setup(
     name='smartcsv',
-    version='0.1.5',
-    description="CSVs are awesome, yet they're pretty dumb. Let's get them smarter!",
+    version='0.2.0',
+    description=("CSVs are awesome, yet they're pretty dumb. "
+                 "Let's get them smarter!"),
     url='http://github.com/santiagobasulto/smartcsv',
-    download_url="https://github.com/santiagobasulto/smartcsv/tarball/0.1.5",
+    download_url="https://github.com/santiagobasulto/smartcsv/tarball/0.2.0",
     author='Santiago Basulto',
     author_email='santiago.basulto@gmail.com',
     license='MIT',
@@ -37,7 +38,8 @@ setup(
         'py==1.4.23',
         'pytest==2.6.1',
         'pytest-cov==1.8.0',
-        'six==1.7.3'
+        'six==1.7.3',
+        'mock==1.0.1'
     ],
     zip_safe=False,
     cmdclass={'test': PyTest},
