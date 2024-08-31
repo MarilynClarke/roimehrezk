@@ -89,11 +89,25 @@ with open('my-csv.csv', 'r') as f:
 
 ### More advanced usage
 
-Assuming a CSV with the an error in the second row.
+**Errors**
+
+By default `smartcsv` will raise a `smartcsv.exceptions.InvalidCSVException` when it encounters an error in a column (a missing required field, a field different than choices, a validation failure, etc). The exception will have a nice error message in that case:
+
+```python
+# Assuming the price field is missing
+try:
+    item = next(reader)
+except InvalidCSVException as e:
+    print(e.errors)
+    # {'price': 'Field required and not provided.'}
+```
+
+You can always avoid fast-failure (raising an exception on failure). You can pass the `fail_fast` argument as `False`. That will prevent exceptions, instead the errors are reported in the reader object (indicating the row number and the detail of the errors). For example, assuming a CSV with the an error in the second row:
 
 ```python
 reader = smartcsv.reader(f, columns=COLUMNS_1, fail_fast=False)
 for obj in reader:
+    # All the processing is done Ok without exceptions raised.
     print(obj['title'])
     
 error_row = reader.errors['rows'][1]  # Second row has index = 1. Errors are 0-indexed.
@@ -101,6 +115,7 @@ print(error_row['row'])  # Print original row data
 print(error_row['errors'].keys())  # currency  (the currency column)
 print(error_row['errors']['currency'])  # Invalid currency... (nice error explanation)
 ```
+
 You can also specify a `max_failures` parameter. It will count failures and will raise an exception when that threshold is exceeded.
 
 **Strip white spaces**
