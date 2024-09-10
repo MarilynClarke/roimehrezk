@@ -48,6 +48,8 @@ The basic is to define a spec for the columns of your csv. Assuming the followin
 First you need to define the spec for your columns. This is an example (the one used in `tests`):
 
 ```python
+CURRENCIES = ('USD', 'ARS', 'JPY')
+
 COLUMNS_1 = [
     {'name': 'title', 'required': True},
     {'name': 'category', 'required': True},
