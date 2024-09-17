@@ -206,11 +206,11 @@ class CSVModelReader(object):
 
         return obj
 
-    def __next__(self):
+    def next_value(self):
         csv_row = next(self.reader)
 
         if self.is_empty_row(csv_row):
-            return next(self)
+            return None
 
         valid, errors = self.validate_row(csv_row)
 
@@ -225,7 +225,7 @@ class CSVModelReader(object):
                     csv_row, row_counter=self.row_counter,
                     error_description=errors)
                 self.row_counter += 1
-                return next(self)
+                return None
 
         try:
             obj = self._build_object(csv_row)
@@ -237,9 +237,15 @@ class CSVModelReader(object):
                 csv_row, self.row_counter,
                 error_description={'transform': repr(original_exception)})
             self.row_counter += 1
-            return next(self)
+            return None
 
         self.row_counter += 1
         return obj
+
+    def __next__(self):
+        val = None
+        while val is None:
+            val = self.next_value()
+        return val
 
     next = __next__
