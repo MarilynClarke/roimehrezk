@@ -36,6 +36,33 @@ title,category,subcategory,currency,price,url,image_url
         self.assertModelsEquals(iphone, IPHONE_DATA)
         self.assertModelsEquals(ipad, IPAD_DATA)
 
+    def test_valid_csv_with_columns_names_with_whitespaces(self):
+        """Should be valid if all data is passed"""
+        csv_data = """
+title,category,subcategory,currency,price,url,Image URL
+{iphone_data}
+{ipad_data}
+        """.format(
+            iphone_data=VALID_TEMPLATE_STR.format(**IPHONE_DATA),
+            ipad_data=VALID_TEMPLATE_STR.format(**IPAD_DATA),
+        )
+        columns = COLUMNS_1[:]
+        image_column = columns[-1].copy()
+        image_column['name'] = "Image URL"
+        columns = columns[:-1] + [image_column]
+
+        reader = smartcsv.reader(StringIO(csv_data), columns=columns)
+        iphone = next(reader)
+        ipad = next(reader)
+
+        self.assertRaises(StopIteration, lambda: list(next(reader)))
+
+        self.assertTrue(
+            isinstance(iphone, dict) and isinstance(ipad, dict))
+
+        self.assertEqual(iphone['Image URL'], 'http://apple.com/iphone.jpg')
+        self.assertEqual(ipad['Image URL'], 'http://apple.com/ipad.jpg')
+
     def test_valid_csv_with_blank_lines(self):
         """Should be valid even if there are blank lines"""
         csv_data = """
