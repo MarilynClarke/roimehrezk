@@ -58,6 +58,16 @@ IPAD_DATA = {
     'url': 'http://apple.com/ipad'
 }
 
+EMPTY_DATA = {
+    'category': '',
+    'currency': '',
+    'image_url': '',
+    'price': '',
+    'subcategory': '',
+    'title': '',
+    'url': ''
+}
+
 VALID_TEMPLATE_STR = ("{title},{category},{subcategory},{currency},"
                       "{price},{url},{image_url}")
 
