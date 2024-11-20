@@ -1,7 +1,6 @@
 import csv
 import six
 
-from copy import deepcopy
 if six.PY3:
     from io import StringIO
 else:
