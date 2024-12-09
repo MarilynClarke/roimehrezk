@@ -16,7 +16,7 @@ custom parsing, failure control and nice error messages.
 """
 
 __title__ = 'smartcsv'
-__version__ = '0.2.1'
+__version__ = '0.2.2'
 __build__ = 0x000201
 __author__ = 'Santiago Basulto'
 __license__ = 'MIT'
