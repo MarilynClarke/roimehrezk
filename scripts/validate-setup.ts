@@ -1,7 +1,7 @@
 #!/usr/bin/env tsx
 
 /**
- * Setup validation script
+ * Setup validation script 
  * Checks if all required dependencies and configuration are in place
  */
 
